@@ -1,11 +1,23 @@
 public class Task {
-    private String mytask;
+    protected String description;
+    protected boolean isDone;
 
-    public Task(String input){
-        this.mytask = input;
+    public Task(String description){
+        this.description = description;
+        this.isDone = false;
     }
+
     public String GiveTask(){
-        return this.mytask;
+        return "[" + getStatusIcon() + "] " + this.description;
     }
+
+    public String getStatusIcon() {
+        return (isDone ? "\u2713" : "\u2718"); //return tick or X symbols
+    }
+
+    public void SetDone(){
+        this.isDone = true;
+    }
+
 
 }
