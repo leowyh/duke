@@ -1,47 +1,52 @@
-
 import java.util.*;
 
 public class Duke {
     public static final String line = "    ____________________________________________________________\n";
     public static final ArrayList<Task> mylist = new ArrayList<Task>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DukeException {
 
         StartMessage();
         Scanner in = new Scanner(System.in);
         while(true){
             String input = in.nextLine();
-            if (input.equals("bye")) {
-                //print bye message
-                ByeMessage();
-                in.close();
-                break;
-            }else if (input.equals("list")){
-                //print out current list
-                PrintList();
-            }
-            else if (input.startsWith("done")){
-                String[] arr = input.split(" ", 2);
-                int numdone = Integer.parseInt(arr[1]) - 1;
-                mylist.get(numdone).SetDone();
-                PrintDoneMessage(numdone);
-            }
-            else if(input.startsWith("deadline")){
-                ProcessTask(input);
+            try {
+                if (input.equals("bye")) {
+                    //print bye message
+                    ByeMessage();
+                    in.close();
+                    break;
+                } else if (input.equals("list")) {
+                    //print out current list
+                    PrintList();
+                } else if (input.startsWith("done")) {
+
+                    String[] arr = input.split(" ", 2);
+                    int numdone = Integer.parseInt(arr[1]) - 1;
+                    mylist.get(numdone).SetDone();
+                    PrintDoneMessage(numdone);
+
+                } else if (input.startsWith("deadline")) {
+                    ProcessTask(input);
+
+                } else if (input.startsWith("todo")) {
+                    AddInput(input);
+
+                } else if (input.startsWith("event")) {
+                    ProcessTask(input);
+
+
+                } else {
+
+                    throw new DukeException("     \u2639 OOPS!!! I'm sorry, but I don't know what that means :-(");
+
+                }
 
             }
-            else if(input.startsWith("todo")){
-                AddInput(input);
-
-            }
-            else if(input.startsWith("event")){
-                ProcessTask(input);
-
-
-            }
-            else{
-                //add task to list
-
+            catch (DukeException e){
+                System.out.print(line);
+                System.out.println(e.getMessage());
+                System.out.print(line);
             }
         }
 
@@ -50,25 +55,39 @@ public class Duke {
     private static void ProcessTask(String input){
         //deadline
         if (input.startsWith("deadline")){
-            String[] splitspace = input.split(" ", 2);
-            String[] splitslash = splitspace[1].split("/", 2);
-            String taskDescription = splitslash[0];
-            String[] splittime = splitslash[1].split(" ", 2);
-            String taskTime = splittime[1];
-            Deadline deadline = new Deadline(taskDescription, taskTime);
-            mylist.add(deadline);
-            PrintAddedMessage(deadline);
+            try {
+                String[] splitspace = input.split(" ", 2);
+                String[] splitslash = splitspace[1].split("/", 2);
+                String taskDescription = splitslash[0];
+                String[] splittime = splitslash[1].split(" ", 2);
+                String taskTime = splittime[1];
+                Deadline deadline = new Deadline(taskDescription, taskTime);
+                mylist.add(deadline);
+                PrintAddedMessage(deadline);
+            }
+            catch (ArrayIndexOutOfBoundsException e){
+                System.out.print(line);
+                System.out.println("     \u2639 OOPS!!! The description of a deadline cannot be empty.");
+                System.out.print(line);
+            }
         }
         //event
         else{
-            String[] splitspace = input.split(" ", 2);
-            String[] splitslash = splitspace[1].split("/", 2);
-            String taskDescription = splitslash[0];
-            String[] splittime = splitslash[1].split(" ", 2);
-            String taskTime = splittime[1];
-            Event event = new Event(taskDescription, taskTime);
-            mylist.add(event);
-            PrintAddedMessage(event);
+            try {
+                String[] splitspace = input.split(" ", 2);
+                String[] splitslash = splitspace[1].split("/", 2);
+                String taskDescription = splitslash[0];
+                String[] splittime = splitslash[1].split(" ", 2);
+                String taskTime = splittime[1];
+                Event event = new Event(taskDescription, taskTime);
+                mylist.add(event);
+                PrintAddedMessage(event);
+            }
+            catch(ArrayIndexOutOfBoundsException e) {
+                System.out.print(line);
+                System.out.println("     \u2639 OOPS!!! The description of a event cannot be empty.");
+                System.out.print(line);
+            }
         }
 
 
@@ -100,10 +119,17 @@ public class Duke {
     }
 
     private static void AddInput(String input){
-        String[] splitspace = input.split(" ", 2);
-        Todo todotoadd = new Todo(splitspace[1]);
-        mylist.add(todotoadd);
-        PrintAddedMessage(todotoadd);
+        try {
+            String[] splitspace = input.split(" ", 2);
+            Todo todotoadd = new Todo(splitspace[1]);
+            mylist.add(todotoadd);
+            PrintAddedMessage(todotoadd);
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.print(line);
+            System.out.println("     \u2639 OOPS!!! The description of a todo cannot be empty.");
+            System.out.print(line);
+        }
     }
 
     private static void StartMessage(){
