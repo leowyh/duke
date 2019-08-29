@@ -1,10 +1,15 @@
-import java.util.*;
+import java.io.*;
+import java.util.Scanner;
+import java.util.ArrayList;
 
-public class Duke {
+public class Duke{
     public static final String line = "    ____________________________________________________________\n";
-    public static final ArrayList<Task> mylist = new ArrayList<Task>();
+    public static ArrayList<Task> mylist = new ArrayList<Task>();
 
     public static void main(String[] args) throws DukeException {
+
+
+        LoadArray();
 
         StartMessage();
         Scanner in = new Scanner(System.in);
@@ -28,12 +33,15 @@ public class Duke {
 
                 } else if (input.startsWith("deadline")) {
                     ProcessTask(input);
+                    SaveArray();
 
                 } else if (input.startsWith("todo")) {
                     AddInput(input);
+                    SaveArray();
 
                 } else if (input.startsWith("event")) {
                     ProcessTask(input);
+                    SaveArray();
 
 
                 } else {
@@ -50,6 +58,42 @@ public class Duke {
             }
         }
 
+    }
+
+    private static void SaveArray(){
+        try {
+            FileOutputStream file = new FileOutputStream("data/duke.txt");
+            ObjectOutputStream out = new ObjectOutputStream(file);
+            out.writeObject(mylist);
+            out.close();
+            file.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    private static void LoadArray(){
+        try
+        {
+            FileInputStream file = new FileInputStream("data/duke.txt");
+            ObjectInputStream out = new ObjectInputStream(file);
+
+            mylist = (ArrayList) out.readObject();
+
+            out.close();
+            file.close();
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+            return;
+        }
+        catch (ClassNotFoundException c)
+        {
+            System.out.println("Class not found");
+            c.printStackTrace();
+            return;
+        }
     }
 
     private static void ProcessTask(String input){
