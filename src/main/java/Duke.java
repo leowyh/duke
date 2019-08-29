@@ -26,12 +26,61 @@ public class Duke {
                 mylist.get(numdone).SetDone();
                 PrintDoneMessage(numdone);
             }
+            else if(input.startsWith("deadline")){
+                ProcessTask(input);
+
+            }
+            else if(input.startsWith("todo")){
+                AddInput(input);
+
+            }
+            else if(input.startsWith("event")){
+                ProcessTask(input);
+
+
+            }
             else{
                 //add task to list
-                AddInput(input);
+
             }
         }
 
+    }
+
+    private static void ProcessTask(String input){
+        //deadline
+        if (input.startsWith("deadline")){
+            String[] splitspace = input.split(" ", 2);
+            String[] splitslash = splitspace[1].split("/", 2);
+            String taskDescription = splitslash[0];
+            String[] splittime = splitslash[1].split(" ", 2);
+            String taskTime = splittime[1];
+            Deadline deadline = new Deadline(taskDescription, taskTime);
+            mylist.add(deadline);
+            PrintAddedMessage(deadline);
+        }
+        //event
+        else{
+            String[] splitspace = input.split(" ", 2);
+            String[] splitslash = splitspace[1].split("/", 2);
+            String taskDescription = splitslash[0];
+            String[] splittime = splitslash[1].split(" ", 2);
+            String taskTime = splittime[1];
+            Event event = new Event(taskDescription, taskTime);
+            mylist.add(event);
+            PrintAddedMessage(event);
+        }
+
+
+
+    }
+
+    private static void PrintAddedMessage(Task task){
+        System.out.print(line + "     Got it. I've added this task:  \n");
+        System.out.print("       " + task.GiveTask() + "\n");
+        int tasksize = mylist.size();
+        System.out.print("     Now you have " + tasksize + " tasks in the list." + "\n");
+        System.out.print(line);
     }
 
     private static void PrintDoneMessage(int numdone){
@@ -45,22 +94,16 @@ public class Duke {
         System.out.print(line + "     Here are the tasks in your list:\n");
         for (int i = 0; i < listsize; i++){
             int listnum = i+1;
-            System.out.print("     " + listnum + ". " + mylist.get(i).GiveTask() + "\n");
+            System.out.print("     " + listnum + "." + mylist.get(i).GiveTask() + "\n");
         }
         System.out.print(line);
     }
 
     private static void AddInput(String input){
-        Task tasktoadd = new Task(input);
-        mylist.add(tasktoadd);
-        AddedTaskMessage(input);
-    }
-
-    private static void AddedTaskMessage(String input){
-        System.out.print(line + "     added: " + input);
-        System.out.println();
-        System.out.print(line);
-
+        String[] splitspace = input.split(" ", 2);
+        Todo todotoadd = new Todo(splitspace[1]);
+        mylist.add(todotoadd);
+        PrintAddedMessage(todotoadd);
     }
 
     private static void StartMessage(){
