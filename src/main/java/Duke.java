@@ -1,10 +1,14 @@
 import java.io.*;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 
 public class Duke{
-    public static final String line = "    ____________________________________________________________\n";
-    public static ArrayList<Task> mylist = new ArrayList<Task>();
+    private static final String line = "    ____________________________________________________________\n";
+    private static ArrayList<Task> mylist = new ArrayList<Task>();
+    private static SimpleDateFormat dataformat = new SimpleDateFormat("dd/MM/yyyy HHmm");
 
     public static void main(String[] args) throws DukeException {
 
@@ -60,6 +64,8 @@ public class Duke{
 
     }
 
+
+
     private static void SaveArray(){
         try {
             FileOutputStream file = new FileOutputStream("data/duke.txt");
@@ -86,13 +92,13 @@ public class Duke{
         catch (IOException ioe)
         {
             ioe.printStackTrace();
-            return;
+
         }
         catch (ClassNotFoundException c)
         {
             System.out.println("Class not found");
             c.printStackTrace();
-            return;
+
         }
     }
 
@@ -105,13 +111,19 @@ public class Duke{
                 String taskDescription = splitslash[0];
                 String[] splittime = splitslash[1].split(" ", 2);
                 String taskTime = splittime[1];
-                Deadline deadline = new Deadline(taskDescription, taskTime);
+                Date formattedtime = dataformat.parse(taskTime);
+                Deadline deadline = new Deadline(taskDescription, dataformat.format(formattedtime));
                 mylist.add(deadline);
                 PrintAddedMessage(deadline);
             }
             catch (ArrayIndexOutOfBoundsException e){
                 System.out.print(line);
                 System.out.println("     \u2639 OOPS!!! The description of a deadline cannot be empty.");
+                System.out.print(line);
+            }
+            catch (ParseException e){
+                System.out.print(line);
+                System.out.println("     \u2639 OOPS!!! Format of time is wrong.");
                 System.out.print(line);
             }
         }
@@ -123,13 +135,19 @@ public class Duke{
                 String taskDescription = splitslash[0];
                 String[] splittime = splitslash[1].split(" ", 2);
                 String taskTime = splittime[1];
-                Event event = new Event(taskDescription, taskTime);
+                Date formattedtime = dataformat.parse(taskTime);
+                Event event = new Event(taskDescription, dataformat.format(formattedtime));
                 mylist.add(event);
                 PrintAddedMessage(event);
             }
             catch(ArrayIndexOutOfBoundsException e) {
                 System.out.print(line);
                 System.out.println("     \u2639 OOPS!!! The description of a event cannot be empty.");
+                System.out.print(line);
+            }
+            catch (ParseException e){
+                System.out.print(line);
+                System.out.println("     \u2639 OOPS!!! Format of time is wrong.");
                 System.out.print(line);
             }
         }
