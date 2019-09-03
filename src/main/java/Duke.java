@@ -47,9 +47,15 @@ public class Duke{
                     ProcessTask(input);
                     SaveArray();
 
+                } else if (input.startsWith("delete")) {
+                    String[] arr = input.split(" ", 2);
+                    int numdelete = Integer.parseInt(arr[1]) - 1;
+                    String task = mylist.get(numdelete).GiveTask();
+                    mylist.remove(numdelete);
+                    PrintDeleteMessage(numdelete, task, mylist.size());
+                    SaveArray();
 
                 } else {
-
                     throw new DukeException("     \u2639 OOPS!!! I'm sorry, but I don't know what that means :-(");
 
                 }
@@ -160,6 +166,13 @@ public class Duke{
         System.out.print(line + "     Got it. I've added this task:  \n");
         System.out.print("       " + task.GiveTask() + "\n");
         int tasksize = mylist.size();
+        System.out.print("     Now you have " + tasksize + " tasks in the list." + "\n");
+        System.out.print(line);
+    }
+
+    private static void PrintDeleteMessage(int numdelete, String task, int tasksize){
+        System.out.print(line + "     Noted. I've removed this task: \n");
+        System.out.print("       " + task + "\n");
         System.out.print("     Now you have " + tasksize + " tasks in the list." + "\n");
         System.out.print(line);
     }
