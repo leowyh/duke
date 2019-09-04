@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
@@ -8,10 +9,10 @@ import java.text.SimpleDateFormat;
 public class Duke{
     private static final String line = "    ____________________________________________________________\n";
     private static ArrayList<Task> mylist = new ArrayList<Task>();
+
     private static SimpleDateFormat dataformat = new SimpleDateFormat("dd/MM/yyyy HHmm");
 
     public static void main(String[] args) throws DukeException {
-
 
         LoadArray();
 
@@ -27,7 +28,7 @@ public class Duke{
                     break;
                 } else if (input.equals("list")) {
                     //print out current list
-                    PrintList();
+                    PrintList(mylist, "list");
                 } else if (input.startsWith("done")) {
 
                     String[] arr = input.split(" ", 2);
@@ -46,6 +47,10 @@ public class Duke{
                 } else if (input.startsWith("event")) {
                     ProcessTask(input);
                     SaveArray();
+
+
+                } else if (input.startsWith("find")) {
+                    ProcessTask(input);
 
 
                 } else {
@@ -89,6 +94,9 @@ public class Duke{
             out.close();
             file.close();
         }
+        catch (EOFException e) {
+            System.out.println("File is empty");
+        }
         catch (IOException ioe)
         {
             ioe.printStackTrace();
@@ -128,7 +136,7 @@ public class Duke{
             }
         }
         //event
-        else{
+        else if((input.startsWith("event"))){
             try {
                 String[] splitspace = input.split(" ", 2);
                 String[] splitslash = splitspace[1].split("/", 2);
@@ -151,6 +159,24 @@ public class Duke{
                 System.out.print(line);
             }
         }
+        //find
+        else{
+            try{
+                ArrayList<Task> findlist = new ArrayList<Task>();
+                String[] splitspace = input.split(" ", 2);
+                for (Task tasks : mylist){
+                    if(tasks.description.contains(splitspace[1])){
+                        findlist.add(tasks);
+                    }
+                }
+                PrintList(findlist, "find");
+            }
+            catch(ArrayIndexOutOfBoundsException e) {
+                System.out.print(line);
+                System.out.println("     \u2639 OOPS!!! The content to find cannot be empty.");
+                System.out.print(line);
+            }
+        }
 
 
 
@@ -170,12 +196,16 @@ public class Duke{
         System.out.print(line);
     }
 
-    private static void PrintList(){
-        int listsize = mylist.size();
-        System.out.print(line + "     Here are the tasks in your list:\n");
+    private static void PrintList(ArrayList<Task> list, String command){
+        int listsize = list.size();
+        if(command.equals("list")){
+            System.out.print(line + "     Here are the tasks in your list:\n");
+        }else{
+            System.out.print(line + "     Here are the matching tasks in your list:\n");
+        }
         for (int i = 0; i < listsize; i++){
             int listnum = i+1;
-            System.out.print("     " + listnum + "." + mylist.get(i).GiveTask() + "\n");
+            System.out.print("     " + listnum + "." + list.get(i).GiveTask() + "\n");
         }
         System.out.print(line);
     }
@@ -198,9 +228,8 @@ public class Duke{
         String logo = line
                 + "     Hello! I'm Duke\n"
                 + "     What can I do for you?\n"
-                + line
-                + "\n";
-        System.out.println(logo);
+                + line;
+        System.out.print(logo);
     }
 
     private static void ByeMessage(){
