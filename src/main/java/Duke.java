@@ -1,5 +1,4 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
@@ -7,17 +6,42 @@ import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 
 public class Duke{
+    private static Ui ui;
+    private static TaskList tasklist;
+    private static Storage storage;
+
+    private Duke(String filepath){
+        ui = new Ui();
+        /*
     private static final String line = "    ____________________________________________________________\n";
     private static ArrayList<Task> mylist = new ArrayList<Task>();
-
     private static SimpleDateFormat dataformat = new SimpleDateFormat("dd/MM/yyyy HHmm");
+*/
+        storage = new Storage(filepath);
+        ArrayList<Task> arraylist = storage.load();
+        tasklist = new TaskList(arraylist);
+    }
+
+    private void run(){
+        ui.StartMessage();
+
+        boolean isExit = false;
+        while(!isExit){
+            String input = ui.readinput();
+            isExit = Parser.parse(input, tasklist, ui);
+        }
+    }
 
     public static void main(String[] args) throws DukeException {
 
+        new Duke("data/duke.txt").run();
+        /*
         LoadArray();
 
         StartMessage();
+
         Scanner in = new Scanner(System.in);
+
         while(true){
             String input = in.nextLine();
             try {
@@ -72,10 +96,11 @@ public class Duke{
                 System.out.print(line);
             }
         }
+*/
 
     }
 
-
+/*
 
     private static void SaveArray(){
         try {
@@ -249,4 +274,6 @@ public class Duke{
         String output = line + "     Bye. Hope to see you again soon!\n" + line;
         System.out.println(output);
     }
+
+ */
 }
