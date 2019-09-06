@@ -9,7 +9,7 @@ public class TaskList{
     }
 
     public TaskList(){
-        this.tasklist = new ArrayList<Task>();
+        this.tasklist = new ArrayList<>();
     }
 
     public void AddTask(Task task){

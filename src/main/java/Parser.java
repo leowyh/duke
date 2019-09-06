@@ -7,13 +7,13 @@ public class Parser {
 
     private static SimpleDateFormat dataformat = new SimpleDateFormat("dd/MM/yyyy HHmm");
 
-    public static boolean parse(String input, TaskList tasklist, Ui ui){
+    public static boolean parse(String input, TaskList tasklist, Ui ui, Storage storage){
         try {
             if (IsBye(input)) {
                 //print bye message
                 ui.ByeMessage();
                 ui.in.close();
-                return false;
+                return true;
 
             } else if (IsList(input)) {
                 //print out current list
@@ -24,19 +24,19 @@ public class Parser {
 
             } else if (IsDeadline(input)) {
                 ProcessDeadline(input, tasklist, ui);
-                Storage.save(tasklist);
+                storage.save(tasklist.ReturnArrayList());
 
             } else if (IsTodo(input)) {
                 ProcessTodo(input, tasklist, ui);
-                Storage.save(tasklist);
+                storage.save(tasklist.ReturnArrayList());
 
             } else if (IsEvent(input)) {
                 ProcessEvent(input, tasklist, ui);
-                Storage.save(tasklist);
+                storage.save(tasklist.ReturnArrayList());
 
             } else if (IsDelete(input)) {
                 ProcessDelete(input, tasklist, ui);
-                Storage.save(tasklist);
+                storage.save(tasklist.ReturnArrayList());
 
             } else if (IsFind(input)) {
                 ProcessFind(input, tasklist, ui);
@@ -49,10 +49,10 @@ public class Parser {
         }
         catch (DukeException e){
             ui.ExceptionMessage(e.getMessage());
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     private static void ProcessFind(String input, TaskList tasklist, Ui ui){
@@ -80,7 +80,7 @@ public class Parser {
             ui.PrintDeleteMessage(numdelete, task, tasklist);
 
         }catch(ArrayIndexOutOfBoundsException e){
-            ui.ExceptionMessage("     \u2639 OOPS!!! Please input the list number to delete.");
+            ui.ExceptionMessage("     ☹️ OOPS!!! Please input the list number to delete.");
         }
     }
 
@@ -92,7 +92,7 @@ public class Parser {
             ui.PrintDoneMessage(numdone, tasklist);
 
         }catch(ArrayIndexOutOfBoundsException e){
-            ui.ExceptionMessage("     \u2639 OOPS!!! Please input the list number to indicate as done.");
+            ui.ExceptionMessage("     ☹️ OOPS!!! Please input the list number to indicate as done.");
         }
     }
 
@@ -109,10 +109,10 @@ public class Parser {
             ui.PrintAddedMessage(deadline, tasklist);
         }
         catch (ArrayIndexOutOfBoundsException e){
-            ui.ExceptionMessage("     \u2639 OOPS!!! The description of a deadline cannot be empty.");
+            ui.ExceptionMessage("     ☹️ OOPS!!! The description of a deadline cannot be empty.");
         }
         catch (ParseException e){
-            ui.ExceptionMessage("     \u2639 OOPS!!! Format of time is wrong.");
+            ui.ExceptionMessage("     ☹️ OOPS!!! Format of time is wrong.");
         }
     }
 
@@ -124,7 +124,7 @@ public class Parser {
             ui.PrintAddedMessage(todotoadd, tasklist);
         }
         catch (ArrayIndexOutOfBoundsException e) {
-            ui.ExceptionMessage("     \u2639 OOPS!!! The description of a todo cannot be empty.");
+            ui.ExceptionMessage("     ☹️ OOPS!!! The description of a todo cannot be empty.");
         }
     }
 
@@ -141,10 +141,10 @@ public class Parser {
             ui.PrintAddedMessage(event, tasklist);
         }
         catch(ArrayIndexOutOfBoundsException e) {
-            ui.ExceptionMessage("     \u2639 OOPS!!! The description of a event cannot be empty.");
+            ui.ExceptionMessage("     ☹️ OOPS!!! The description of a event cannot be empty.");
         }
         catch (ParseException e){
-            ui.ExceptionMessage("     \u2639 OOPS!!! Format of time is wrong.");
+            ui.ExceptionMessage("     ☹️ OOPS!!! Format of time is wrong.");
         }
     }
 

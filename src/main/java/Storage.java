@@ -39,12 +39,12 @@ public class Storage{
         return new ArrayList<Task>();
     }
 
-    public static void save(TaskList tasklist){
+    public static void save(ArrayList<Task> tasklist){
         try {
-            ArrayList<Task> listtosave = tasklist.ReturnArrayList();
+            //ArrayList<Task> listtosave = tasklist.ReturnArrayList();
             FileOutputStream file = new FileOutputStream(filepath);
             ObjectOutputStream out = new ObjectOutputStream(file);
-            out.writeObject(listtosave);
+            out.writeObject(tasklist);
             out.close();
             file.close();
         } catch (IOException ioe) {

@@ -28,7 +28,7 @@ public class Duke{
         boolean isExit = false;
         while(!isExit){
             String input = ui.readinput();
-            isExit = Parser.parse(input, tasklist, ui);
+            isExit = Parser.parse(input, tasklist, ui, storage);
         }
     }
 
