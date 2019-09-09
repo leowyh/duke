@@ -80,7 +80,7 @@ public class Parser {
             ui.PrintDeleteMessage(numdelete, task, tasklist);
 
         }catch(ArrayIndexOutOfBoundsException e){
-            ui.ExceptionMessage("     ☹️ OOPS!!! Please input the list number to delete.");
+            ui.ExceptionMessage("     \u2639 OOPS!!! Please input the list number to delete.");
         }
     }
 
@@ -92,7 +92,7 @@ public class Parser {
             ui.PrintDoneMessage(numdone, tasklist);
 
         }catch(ArrayIndexOutOfBoundsException e){
-            ui.ExceptionMessage("     ☹️ OOPS!!! Please input the list number to indicate as done.");
+            ui.ExceptionMessage("     \u2639 OOPS!!! Please input the list number to indicate as done.");
         }
     }
 
@@ -109,10 +109,10 @@ public class Parser {
             ui.PrintAddedMessage(deadline, tasklist);
         }
         catch (ArrayIndexOutOfBoundsException e){
-            ui.ExceptionMessage("     ☹️ OOPS!!! The description of a deadline cannot be empty.");
+            ui.ExceptionMessage("     \u2639 OOPS!!! The description of a deadline cannot be empty.");
         }
         catch (ParseException e){
-            ui.ExceptionMessage("     ☹️ OOPS!!! Format of time is wrong.");
+            ui.ExceptionMessage("     \u2639 OOPS!!! Format of time is wrong.");
         }
     }
 
@@ -124,7 +124,7 @@ public class Parser {
             ui.PrintAddedMessage(todotoadd, tasklist);
         }
         catch (ArrayIndexOutOfBoundsException e) {
-            ui.ExceptionMessage("     ☹️ OOPS!!! The description of a todo cannot be empty.");
+            ui.ExceptionMessage("     \u2639 OOPS!!! The description of a todo cannot be empty.");
         }
     }
 
@@ -141,10 +141,10 @@ public class Parser {
             ui.PrintAddedMessage(event, tasklist);
         }
         catch(ArrayIndexOutOfBoundsException e) {
-            ui.ExceptionMessage("     ☹️ OOPS!!! The description of a event cannot be empty.");
+            ui.ExceptionMessage("     \u2639 OOPS!!! The description of a event cannot be empty.");
         }
         catch (ParseException e){
-            ui.ExceptionMessage("     ☹️ OOPS!!! Format of time is wrong.");
+            ui.ExceptionMessage("     \u2639 OOPS!!! Format of time is wrong.");
         }
     }
 
