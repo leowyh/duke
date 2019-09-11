@@ -1,12 +1,23 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Parser that parses input from the user.
+ */
 public class Parser {
 
     private static SimpleDateFormat dataformat = new SimpleDateFormat("dd/MM/yyyy HHmm");
 
+    /**
+     * Method that parses input from the user and executes processes based on the input.
+     * @param input Input from the user.
+     * @param tasklist Tasklist of the user.
+     * @param ui Ui that interacts with the user.
+     * @param storage Storage for the Tasklist.
+     * @return Returns boolean variable to indicate when to stop parsing for input.
+     * @throws DukeException if input is not valid.
+     */
     public static boolean parse(String input, TaskList tasklist, Ui ui, Storage storage){
         try {
             if (IsBye(input)) {
@@ -55,6 +66,12 @@ public class Parser {
         return false;
     }
 
+    /**
+     * Processes the find command and outputs a list of tasks containing the word.
+     * @param input Input from the user.
+     * @param tasklist Tasklist of the user.
+     * @param ui Ui that interacts with the user.
+     */
     private static void ProcessFind(String input, TaskList tasklist, Ui ui){
         try{
             TaskList findlist = new TaskList();
@@ -71,19 +88,31 @@ public class Parser {
         }
     }
 
+    /**
+     * Processes the delete command.
+     * @param input Input from the user.
+     * @param tasklist Tasklist of the user.
+     * @param ui Ui that interacts with the user.
+     */
     private static void ProcessDelete(String input, TaskList tasklist, Ui ui){
         try{
             String[] arr = input.split(" ", 2);
             int numdelete = Integer.parseInt(arr[1]) - 1;
             String task = tasklist.get(numdelete).GiveTask();
             tasklist.DeleteTask(numdelete);
-            ui.PrintDeleteMessage(numdelete, task, tasklist);
+            ui.PrintDeleteMessage(task, tasklist);
 
         }catch(ArrayIndexOutOfBoundsException e){
             ui.ExceptionMessage("     \u2639 OOPS!!! Please input the list number to delete.");
         }
     }
 
+    /**
+     * Processes the done command and sets the task specified as done.
+     * @param input Input from the user.
+     * @param tasklist Tasklist of the user.
+     * @param ui Ui that interacts with the user.
+     */
     private static void ProcessDone(String input, TaskList tasklist, Ui ui){
         try{
             String[] arr = input.split(" ", 2);
@@ -96,6 +125,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Processes the deadline command and adds a deadline to the user's Tasklist.
+     * @param input Input from the user.
+     * @param tasklist Tasklist of the user.
+     * @param ui Ui that interacts with the user.
+     */
     private static void ProcessDeadline(String input, TaskList tasklist, Ui ui){
         try {
             String[] splitspace = input.split(" ", 2);
@@ -116,6 +151,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Processes the todo command and adds a todo to the user's Tasklist.
+     * @param input Input from the user.
+     * @param tasklist Tasklist of the user.
+     * @param ui Ui that interacts with the user.
+     */
     private static void ProcessTodo(String input, TaskList tasklist, Ui ui){
         try {
             String[] splitspace = input.split(" ", 2);
@@ -128,6 +169,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Processes the event command and adds an event to the user's Tasklist.
+     * @param input Input from the user.
+     * @param tasklist Tasklist of the user.
+     * @param ui Ui that interacts with the user.
+     */
     private static void ProcessEvent(String input, TaskList tasklist, Ui ui){
         try {
             String[] splitspace = input.split(" ", 2);
@@ -147,6 +194,7 @@ public class Parser {
             ui.ExceptionMessage("     \u2639 OOPS!!! Format of time is wrong.");
         }
     }
+
 
     private static boolean IsBye(String input){
         return input.equals("bye");
